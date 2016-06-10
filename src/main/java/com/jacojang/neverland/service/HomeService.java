@@ -9,6 +9,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by jacojang on 16. 6. 8.
  */
@@ -31,6 +33,22 @@ public class HomeService {
         return homeRepository.findAll();
     }
 
+    public Iterable<Home> listByPrice() {
+        return homeRepository.findAllByOrderByPriceAsc();
+    }
+    public Iterable<Home> listByType() {
+        return homeRepository.findAllByOrderByTypeDesc();
+    }
+    public Iterable<Home> listBySize() {
+        return homeRepository.findAllByOrderBySizeAsc();
+    }
+    public Iterable<Home> listByCheckDate() {
+        return homeRepository.findAllByOrderByCheckDateDesc();
+    }
+    public Iterable<Home> listByName() {
+        return homeRepository.findAllByOrderByNameAsc();
+    }
+
     private void rebuild() {
         homeRepository.deleteAll();
 
@@ -38,7 +56,8 @@ public class HomeService {
         LandHttpClientService landClient = new LandHttpClientService();
 
         for(LandUri landUri: landUris){
-            landClient.get(landUri.getUri());
+            List<Home> ret = landClient.get(landUri.getUri());
+            homeRepository.save(ret);
         }
     }
 }

@@ -15,6 +15,7 @@ import org.jsoup.select.Elements;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.apache.http.protocol.HTTP.USER_AGENT;
@@ -45,14 +46,60 @@ public class LandHttpClientService {
     }
 
     private List<Home> getDomParse(String uri) {
+        List<Home> ret = new LinkedList<>();
         try {
             Document doc = Jsoup.connect(uri).get();
-            Elements elems = doc.select("#depth4Content > fieldset > div > div> table > tbody > tr");
+            Elements elems = doc.select("#depth4Content > fieldset > div > div> table > tbody > tr ");
 
             int cnt=0;
-            for(Element e: elems){
-                if(cnt % 2 == 0) {
-                    log.info(e.select("td > div > div").text());
+            for(Element e1: elems){
+                if(cnt % 2 ==0) {
+                    // Info
+                    Home add = new Home();
+                    int idx = 0;
+                    for (Element e : e1.select("div")) {
+                        //log.info("2-" + e.text());
+
+                        switch(idx){
+                            case 0:
+                                add.setType(e.text());
+                                break;
+                            case 1:
+                                if(e.text().charAt(0) == '1'){
+                                    add.setCheckDate(e.text());
+                                }else{
+                                    add.setLink(e.select("[target=\"_blank\"]").attr("href"));
+                                    add.setName(e.text());
+                                    idx++;
+                                }
+                                break;
+                            case 2:
+                                add.setLink(e.select("[target=\"_blank\"]").attr("href"));
+                                add.setName(e.text());
+                                break;
+                            case 3:
+                                String []strArr = e.text().split(" ");
+                                add.setSize(strArr[0]);
+                                break;
+                            case 6:
+                                add.setPos(e.text());
+                                break;
+                            case 7:
+                                add.setFloor(e.text());
+                                break;
+                            case 8:
+                                add.setPrice(e.text());
+                                break;
+                            case 9:
+                                add.setAgent(e.text());
+                                break;
+                        }
+                        idx++;
+                    }
+                    ret.add(add);
+                }else{
+                    // Description
+
                 }
                 cnt++;
             }
@@ -60,7 +107,7 @@ public class LandHttpClientService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return ret;
     }
 
     public LandHttpClientService(){
@@ -68,7 +115,7 @@ public class LandHttpClientService {
 
     public List<Home> get(String uri){
 
-        this.getDomParse(uri);
+        return this.getDomParse(uri);
         /*
         StringBuffer response = null;
         try {
@@ -78,8 +125,5 @@ public class LandHttpClientService {
         }
         log.info(response.toString());
         */
-
-
-        return null;
     }
 }

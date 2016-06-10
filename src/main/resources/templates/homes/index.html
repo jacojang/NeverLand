@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layouts/main">
+<head>
+    <title>List of Homes</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Pos</th>
+            <th>Floor</th>
+            <th>Price</th>
+            <th>Agent</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="home : ${homes}">
+            <td th:text="${home.type}">title</td>
+            <td th:text="${home.checkDate}">title</td>
+            <td ><a th:href="${home.link}" target="_blank"><span th:text="${home.name}"></span></a></td>
+            <td th:text="${home.size}">title</td>
+            <td th:text="${home.pos}">title</td>
+            <td th:text="${home.floor}">title</td>
+            <td th:text="${home.price}">title</td>
+            <td th:text="${home.agent}">title</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/admin/home/create}">Add New Post</a>
+    <br/><br/>
+
+    <p th:if="${homes.size() == 0}">
+    <div class="alert alert-warning" role="alert">No Homes Found.</div>
+    </p>
+
+</div>
+
+</body>
+</html>

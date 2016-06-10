@@ -1,7 +1,7 @@
 package com.jacojang.neverland.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
@@ -10,21 +10,26 @@ import javax.persistence.Id;
 @Entity
 public class Home {
     @Id
+    @GeneratedValue
     private Long id;
     private String name;
-
-    @Column(columnDefinition = "TEXT")
     private String desc;
-
-    private Integer floor;
-    private Integer totalFloor;
+    private String type;
+    private String floor;
     private String size;
-    private Long price;
+    private String price;
     private String agent;
-    private String agentPhone;
-
     private String checkDate;
-    private HomeType homeType;
+    private String pos;
+    private String link;
+
+    public String getPos() {
+        return pos;
+    }
+
+    public void setPos(String pos) {
+        this.pos = pos;
+    }
 
     public Long getId() {
         return id;
@@ -50,20 +55,20 @@ public class Home {
         this.desc = desc;
     }
 
-    public Integer getFloor() {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getFloor() {
         return floor;
     }
 
-    public void setFloor(Integer floor) {
+    public void setFloor(String floor) {
         this.floor = floor;
-    }
-
-    public Integer getTotalFloor() {
-        return totalFloor;
-    }
-
-    public void setTotalFloor(Integer totalFloor) {
-        this.totalFloor = totalFloor;
     }
 
     public String getSize() {
@@ -74,11 +79,11 @@ public class Home {
         this.size = size;
     }
 
-    public Long getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -90,14 +95,6 @@ public class Home {
         this.agent = agent;
     }
 
-    public String getAgentPhone() {
-        return agentPhone;
-    }
-
-    public void setAgentPhone(String agentPhone) {
-        this.agentPhone = agentPhone;
-    }
-
     public String getCheckDate() {
         return checkDate;
     }
@@ -106,11 +103,11 @@ public class Home {
         this.checkDate = checkDate;
     }
 
-    public HomeType getHomeType() {
-        return homeType;
+    public String getLink() {
+        return link;
     }
 
-    public void setHomeType(HomeType homeType) {
-        this.homeType = homeType;
+    public void setLink(String link) {
+        this.link = "http://land.naver.com"+link;
     }
 }
